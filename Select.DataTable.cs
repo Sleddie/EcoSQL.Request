@@ -3,7 +3,7 @@ using System.Data.Common;
 
 namespace EcoSQL.Request;
 
-public partial class Select
+public static partial class Select
 {
     extension(DbProviderFactory dbProviderFactory)
     {
