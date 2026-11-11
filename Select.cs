@@ -1,154 +1,150 @@
-﻿using System.Data.Common;
-using System.Text;
+﻿using System.Text;
 
 namespace EcoSQL.Request;
 
 public static partial class Select
 {
-    extension(DbProviderFactory dbProviderFactory)
+    private static bool SelectData<TData>(
+        QueryData<TData> queryData,
+        string connectionString,
+        string queryText,
+        OperationUnit queryInfoUnit,
+        int commandTimeout,
+        CancellationToken cancellationToken,
+        out TData? obtainedData,
+        Func<TData, int>? getCount = null,
+        string? queryAdditionalInfo = null)
+        where TData : class
     {
-        private bool SelectData<TData>(
-            string connectionString,
-            string queryText,
-            CancellationToken cancellationToken,
-            int commandTimeout,
-            QueryData<TData> queryData,
-            OperationUnit queryInfoUnit,
-            out TData? obtainedData,
-            Func<TData, int>? getCount = null,
-            string? queryAdditionalInfo = null)
-            where TData : class
-        {
-            string statusMessage = "";
-            obtainedData = null;
+        string statusMessage = "";
+        obtainedData = null;
 
-            try
-            {
-                obtainedData = queryData(
-                    connectionString,
-                    queryText,
-                    cancellationToken,
-                    commandTimeout);
-                statusMessage = "Success";
-                return obtainedData is not null;
-            }
-            catch (OperationCanceledException)
-            {
-                statusMessage = "Cancelled";
-                obtainedData = null;
-                return false;
-            }
-            catch (Exception ex)
-            {
-                statusMessage = $"Error:{Environment.NewLine}" +
-                    $"\t{ex?.GetExceptionFullMessage()}";
-                obtainedData = null;
-                return false;
-            }
-            finally
-            {
-                if (getCount is null || obtainedData is null)
-                {
-                    FinalizeOperationInfo(
-                        queryInfoUnit,
-                        statusMessage,
-                        queryAdditionalInfo: queryAdditionalInfo);
-                }
-                else
-                {
-                    int itemsCount = getCount(obtainedData);
-                    FinalizeOperationInfo(
-                        queryInfoUnit,
-                        statusMessage,
-                        itemsCount,
-                        queryAdditionalInfo: queryAdditionalInfo);
-                }
-            }
-        }
-
-        private bool SelectData<TData>(
-            string connectionString,
-            string queryText,
-            CancellationToken cancellationToken,
-            int commandTimeout,
-            QueryData<TData> queryData,
-            ResultUnit<TData> obtainedDataInfoUnit,
-            Func<TData, int>? getCount = null,
-            string? queryAdditionalInfo = null)
-            where TData : class
+        try
         {
-            bool isObtained = dbProviderFactory.SelectData(
+            obtainedData = queryData(
                 connectionString,
                 queryText,
-                cancellationToken,
                 commandTimeout,
-                queryData,
-                obtainedDataInfoUnit,
-                out TData? obtainedData,
-                getCount: getCount,
-                queryAdditionalInfo: queryAdditionalInfo);
-            obtainedDataInfoUnit.Result = obtainedData;
-            return isObtained;
+                cancellationToken);
+            statusMessage = "Success";
+            return obtainedData is not null;
         }
-
-        private async Task<bool> SelectDataAsync<TData>(
-            string connectionString,
-            string queryText,
-            CancellationToken cancellationToken,
-            int commandTimeout,
-            QueryDataAsync<TData> queryDataAsync,
-            ResultUnit<TData> obtainedDataInfoUnit,
-            Func<TData, int>? getCount = null,
-            string? queryAdditionalInfo = null)
-            where TData : class
+        catch (OperationCanceledException)
         {
-            string statusMessage = "";
-            TData? obtainedData = null;
+            statusMessage = "Cancelled";
+            obtainedData = null;
+            return false;
+        }
+        catch (Exception ex)
+        {
+            statusMessage = $"Error:{Environment.NewLine}" +
+                $"\t{ex?.GetExceptionFullMessage()}";
+            obtainedData = null;
+            return false;
+        }
+        finally
+        {
+            if (getCount is null || obtainedData is null)
+            {
+                FinalizeOperationInfo(
+                    queryInfoUnit,
+                    statusMessage,
+                    queryAdditionalInfo: queryAdditionalInfo);
+            }
+            else
+            {
+                int itemsCount = getCount(obtainedData);
+                FinalizeOperationInfo(
+                    queryInfoUnit,
+                    statusMessage,
+                    itemsCount,
+                    queryAdditionalInfo: queryAdditionalInfo);
+            }
+        }
+    }
 
-            try
-            {
-                obtainedData = await queryDataAsync(
-                    connectionString,
-                    queryText,
-                    cancellationToken,
-                    commandTimeout);
-                statusMessage = "Success";
-                return obtainedData is not null;
-            }
-            catch (OperationCanceledException)
-            {
-                statusMessage = "Cancelled";
-                obtainedData = null;
-                return false;
-            }
-            catch (Exception ex)
-            {
-                statusMessage = $"Error:{Environment.NewLine}" +
-                    $"\t{ex?.GetExceptionFullMessage()}";
-                obtainedData = null;
-                return false;
-            }
-            finally
-            {
-                if (getCount is null || obtainedData is null)
-                {
-                    FinalizeOperationInfo(
-                        obtainedDataInfoUnit,
-                        statusMessage,
-                        queryAdditionalInfo: queryAdditionalInfo);
-                }
-                else
-                {
-                    int itemsCount = getCount(obtainedData);
-                    FinalizeOperationInfo(
-                        obtainedDataInfoUnit,
-                        statusMessage,
-                        itemsCount,
-                        queryAdditionalInfo: queryAdditionalInfo);
-                }
+    private static bool SelectData<TData>(
+        QueryData<TData> queryData,
+        string connectionString,
+        string queryText,
+        ResultUnit<TData> obtainedDataInfoUnit,
+        int commandTimeout,
+        CancellationToken cancellationToken,
+        Func<TData, int>? getCount = null,
+        string? queryAdditionalInfo = null)
+        where TData : class
+    {
+        bool isObtained = SelectData(
+            queryData,
+            connectionString,
+            queryText,
+            obtainedDataInfoUnit,
+            commandTimeout,
+            cancellationToken,
+            out TData? obtainedData,
+            getCount: getCount,
+            queryAdditionalInfo: queryAdditionalInfo);
+        obtainedDataInfoUnit.Result = obtainedData;
+        return isObtained;
+    }
 
-                obtainedDataInfoUnit.Result = obtainedData;
+    private static async Task<bool> SelectDataAsync<TData>(
+        QueryDataAsync<TData> queryDataAsync,
+        string connectionString,
+        string queryText,
+        ResultUnit<TData> obtainedDataInfoUnit,
+        int commandTimeout,
+        CancellationToken cancellationToken,
+        Func<TData, int>? getCount = null,
+        string? queryAdditionalInfo = null)
+        where TData : class
+    {
+        string statusMessage = "";
+        TData? obtainedData = null;
+
+        try
+        {
+            obtainedData = await queryDataAsync(
+                connectionString,
+                queryText,
+                commandTimeout,
+                cancellationToken);
+            statusMessage = "Success";
+            return obtainedData is not null;
+        }
+        catch (OperationCanceledException)
+        {
+            statusMessage = "Cancelled";
+            obtainedData = null;
+            return false;
+        }
+        catch (Exception ex)
+        {
+            statusMessage = $"Error:{Environment.NewLine}" +
+                $"\t{ex?.GetExceptionFullMessage()}";
+            obtainedData = null;
+            return false;
+        }
+        finally
+        {
+            if (getCount is null || obtainedData is null)
+            {
+                FinalizeOperationInfo(
+                    obtainedDataInfoUnit,
+                    statusMessage,
+                    queryAdditionalInfo: queryAdditionalInfo);
             }
+            else
+            {
+                int itemsCount = getCount(obtainedData);
+                FinalizeOperationInfo(
+                    obtainedDataInfoUnit,
+                    statusMessage,
+                    itemsCount,
+                    queryAdditionalInfo: queryAdditionalInfo);
+            }
+
+            obtainedDataInfoUnit.Result = obtainedData;
         }
     }
 
@@ -201,14 +197,14 @@ public static partial class Select
     private delegate TData? QueryData<TData>(
         string connectionString,
         string queryText,
-        CancellationToken cancellationToken,
-        int commandTimeout)
+        int commandTimeout,
+        CancellationToken cancellationToken)
         where TData : class;
 
     private delegate Task<TData?> QueryDataAsync<TData>(
         string connectionString,
         string queryText,
-        CancellationToken cancellationToken,
-        int commandTimeout)
+        int commandTimeout,
+        CancellationToken cancellationToken)
         where TData : class;
 }

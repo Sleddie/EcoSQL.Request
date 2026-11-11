@@ -10,26 +10,26 @@ public static partial class Select
         /// <summary>Selects a data table from the database</summary>
         /// <param name="connectionString">Connection string</param>
         /// <param name="queryText">SQL query text</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <param name="commandTimeout">Query command timeout</param>
         /// <param name="resultTableInfoUnit">Query execution information unit</param>
+        /// <param name="commandTimeout">Query command timeout</param>
+        /// <param name="cancellationToken">Cancellation token</param>
         /// <param name="queryAdditionalInfo">Additional query information</param>
         /// <returns>True if the data table was obtained successfully</returns>
         public bool SelectDataTable(
             string connectionString,
             string queryText,
-            CancellationToken cancellationToken,
-            int commandTimeout,
             ResultTableUnit resultTableInfoUnit,
+            int commandTimeout,
+            CancellationToken cancellationToken,
             string? queryAdditionalInfo = null)
         {
-            return dbProviderFactory.SelectData(
+            return SelectData(
+                dbProviderFactory.QueryDataTable,
                 connectionString,
                 queryText,
-                cancellationToken,
-                commandTimeout,
-                dbProviderFactory.QueryDataTable,
                 resultTableInfoUnit,
+                commandTimeout,
+                cancellationToken,
                 getCount: dataTable => dataTable.Rows.Count,
                 queryAdditionalInfo: queryAdditionalInfo);
         }
@@ -37,26 +37,26 @@ public static partial class Select
         /// <summary>Asynchronously selects a data table from the database</summary>
         /// <param name="connectionString">Connection string</param>
         /// <param name="queryText">SQL query text</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <param name="commandTimeout">Query command timeout</param>
         /// <param name="resultTableInfoUnit">Query execution information unit</param>
+        /// <param name="commandTimeout">Query command timeout</param>
+        /// <param name="cancellationToken">Cancellation token</param>
         /// <param name="queryAdditionalInfo">Additional query information</param>
         /// <returns>True if the data table was obtained successfully</returns>
         public async Task<bool> SelectDataTableAsync(
             string connectionString,
             string queryText,
-            CancellationToken cancellationToken,
-            int commandTimeout,
             ResultTableUnit resultTableInfoUnit,
+            int commandTimeout,
+            CancellationToken cancellationToken,
             string? queryAdditionalInfo = null)
         {
-            return await dbProviderFactory.SelectDataAsync(
+            return await SelectDataAsync(
+                dbProviderFactory.QueryDataTableAsync,
                 connectionString,
                 queryText,
-                cancellationToken,
-                commandTimeout,
-                dbProviderFactory.QueryDataTableAsync,
                 resultTableInfoUnit,
+                commandTimeout,
+                cancellationToken,
                 getCount: dataTable => dataTable.Rows.Count,
                 queryAdditionalInfo: queryAdditionalInfo);
         }
@@ -64,8 +64,8 @@ public static partial class Select
         private DataTable? QueryDataTable(
             string connectionString,
             string queryText,
-            CancellationToken cancellationToken,
-            int commandTimeout)
+            int commandTimeout,
+            CancellationToken cancellationToken)
         {
             using DbDataAdapter? dataAdapter = dbProviderFactory.CreateDataAdapter();
 
@@ -87,8 +87,8 @@ public static partial class Select
         private async Task<DataTable?> QueryDataTableAsync(
             string connectionString,
             string queryText,
-            CancellationToken cancellationToken,
-            int commandTimeout)
+            int commandTimeout,
+            CancellationToken cancellationToken)
         {
             await using DbDataSource dataSource =
                 dbProviderFactory.CreateDataSource(connectionString);

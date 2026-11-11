@@ -11,26 +11,26 @@ public static partial class Select
         /// <typeparam name="TItem">Type of the items in the collection</typeparam>
         /// <param name="connectionString">Connection string</param>
         /// <param name="queryText">SQL query text</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <param name="commandTimeout">Query command timeout</param>
         /// <param name="resultCollectionInfoUnit">Query execution information unit</param>
+        /// <param name="commandTimeout">Query command timeout</param>
+        /// <param name="cancellationToken">Cancellation token</param>
         /// <param name="queryAdditionalInfo">Additional query information</param>
         /// <returns>True if the collection was obtained successfully</returns>
         public bool SelectCollection<TItem>(
             string connectionString,
             string queryText,
-            CancellationToken cancellationToken,
-            int commandTimeout,
             ResultCollectionUnit<TItem> resultCollectionInfoUnit,
+            int commandTimeout,
+            CancellationToken cancellationToken,
             string? queryAdditionalInfo = null)
         {
-            return dbProviderFactory.SelectData(
+            return SelectData(
+                dbProviderFactory.QueryCollection<TItem>,
                 connectionString,
                 queryText,
-                cancellationToken,
-                commandTimeout,
-                dbProviderFactory.QueryCollection<TItem>,
                 resultCollectionInfoUnit,
+                commandTimeout,
+                cancellationToken,
                 getCount: collection => collection.Count,
                 queryAdditionalInfo: queryAdditionalInfo);
         }
@@ -39,26 +39,26 @@ public static partial class Select
         /// <typeparam name="TItem">Type of the items in the collection</typeparam>
         /// <param name="connectionString">Connection string</param>
         /// <param name="queryText">SQL query text</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <param name="commandTimeout">Query command timeout</param>
         /// <param name="resultCollectionInfoUnit">Query execution information unit</param>
+        /// <param name="commandTimeout">Query command timeout</param>
+        /// <param name="cancellationToken">Cancellation token</param>
         /// <param name="queryAdditionalInfo">Additional query information</param>
         /// <returns>True if the collection was obtained successfully</returns>
         public async Task<bool> SelectCollectionAsync<TItem>(
             string connectionString,
             string queryText,
-            CancellationToken cancellationToken,
-            int commandTimeout,
             ResultCollectionUnit<TItem> resultCollectionInfoUnit,
+            int commandTimeout,
+            CancellationToken cancellationToken,
             string? queryAdditionalInfo = null)
         {
-            return await dbProviderFactory.SelectDataAsync(
+            return await SelectDataAsync(
+                dbProviderFactory.QueryCollectionAsync<TItem>,
                 connectionString,
                 queryText,
-                cancellationToken,
-                commandTimeout,
-                dbProviderFactory.QueryCollectionAsync<TItem>,
                 resultCollectionInfoUnit,
+                commandTimeout,
+                cancellationToken,
                 getCount: collection => collection.Count,
                 queryAdditionalInfo: queryAdditionalInfo);
         }
@@ -66,8 +66,8 @@ public static partial class Select
         private ICollection<TItem>? QueryCollection<TItem>(
             string connectionString,
             string queryText,
-            CancellationToken cancellationToken,
-            int commandTimeout)
+            int commandTimeout,
+            CancellationToken cancellationToken)
         {
             using DbDataSource dataSource =
                 dbProviderFactory.CreateDataSource(connectionString);
@@ -84,8 +84,8 @@ public static partial class Select
         private async Task<ICollection<TItem>?> QueryCollectionAsync<TItem>(
             string connectionString,
             string queryText,
-            CancellationToken cancellationToken,
-            int commandTimeout)
+            int commandTimeout,
+            CancellationToken cancellationToken)
         {
             await using DbDataSource dataSource =
                 dbProviderFactory.CreateDataSource(connectionString);
