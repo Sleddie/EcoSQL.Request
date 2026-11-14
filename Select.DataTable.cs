@@ -34,6 +34,27 @@ public static partial class Select
                 queryAdditionalInfo: queryAdditionalInfo);
         }
 
+        /// <summary>Selects a data table from the database</summary>
+        /// <param name="connectionString">Connection string</param>
+        /// <param name="queryInfo">Query information</param>
+        /// <param name="resultTableInfoUnit">Query execution information unit</param>
+        /// <param name="queryAdditionalInfo">Additional query information</param>
+        /// <returns>True if the data table was obtained successfully</returns>
+        public bool SelectDataTable(
+            string connectionString,
+            QueryInfo queryInfo,
+            ResultTableUnit resultTableInfoUnit,
+            string? queryAdditionalInfo = null)
+        {
+            return dbProviderFactory.SelectDataTable(
+                connectionString,
+                queryInfo.Text,
+                resultTableInfoUnit,
+                queryInfo.CommandTimeout,
+                queryInfo.CancellationToken ?? CancellationToken.None,
+                queryAdditionalInfo: queryAdditionalInfo);
+        }
+
         /// <summary>Asynchronously selects a data table from the database</summary>
         /// <param name="connectionString">Connection string</param>
         /// <param name="queryText">SQL query text</param>
@@ -58,6 +79,27 @@ public static partial class Select
                 commandTimeout,
                 cancellationToken,
                 getCount: dataTable => dataTable.Rows.Count,
+                queryAdditionalInfo: queryAdditionalInfo);
+        }
+
+        /// <summary>Asynchronously selects a data table from the database</summary>
+        /// <param name="connectionString">Connection string</param>
+        /// <param name="queryInfo">Query information</param>
+        /// <param name="resultTableInfoUnit">Query execution information unit</param>
+        /// <param name="queryAdditionalInfo">Additional query information</param>
+        /// <returns>True if the data table was obtained successfully</returns>
+        public Task<bool> SelectDataTableAsync(
+            string connectionString,
+            QueryInfo queryInfo,
+            ResultTableUnit resultTableInfoUnit,
+            string? queryAdditionalInfo = null)
+        {
+            return dbProviderFactory.SelectDataTableAsync(
+                connectionString,
+                queryInfo.Text,
+                resultTableInfoUnit,
+                queryInfo.CommandTimeout,
+                queryInfo.CancellationToken ?? CancellationToken.None,
                 queryAdditionalInfo: queryAdditionalInfo);
         }
 

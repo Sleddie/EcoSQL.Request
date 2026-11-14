@@ -35,6 +35,28 @@ public static partial class Select
                 queryAdditionalInfo: queryAdditionalInfo);
         }
 
+        /// <summary>Selects a collection of items from the database</summary>
+        /// <typeparam name="TItem">Type of the items in the collection</typeparam>
+        /// <param name="connectionString">Connection string</param>
+        /// <param name="queryInfo">Query information</param>
+        /// <param name="resultCollectionInfoUnit">Query execution information unit</param>
+        /// <param name="queryAdditionalInfo">Additional query information</param>
+        /// <returns>True if the collection was obtained successfully</returns>
+        public bool SelectCollection<TItem>(
+            string connectionString,
+            QueryInfo queryInfo,
+            ResultCollectionUnit<TItem> resultCollectionInfoUnit,
+            string? queryAdditionalInfo = null)
+        {
+            return dbProviderFactory.SelectCollection(
+                connectionString,
+                queryInfo.Text,
+                resultCollectionInfoUnit,
+                queryInfo.CommandTimeout,
+                queryInfo.CancellationToken ?? CancellationToken.None,
+                queryAdditionalInfo: queryAdditionalInfo);
+        }
+
         /// <summary>Asynchronously selects a collection of items from the database</summary>
         /// <typeparam name="TItem">Type of the items in the collection</typeparam>
         /// <param name="connectionString">Connection string</param>
@@ -60,6 +82,28 @@ public static partial class Select
                 commandTimeout,
                 cancellationToken,
                 getCount: collection => collection.Count,
+                queryAdditionalInfo: queryAdditionalInfo);
+        }
+
+        /// <summary>Asynchronously selects a collection of items from the database</summary>
+        /// <typeparam name="TItem">Type of the items in the collection</typeparam>
+        /// <param name="connectionString">Connection string</param>
+        /// <param name="queryInfo">Query information</param>
+        /// <param name="resultCollectionInfoUnit">Query execution information unit</param>
+        /// <param name="queryAdditionalInfo">Additional query information</param>
+        /// <returns>True if the collection was obtained successfully</returns>
+        public Task<bool> SelectCollectionAsync<TItem>(
+            string connectionString,
+            QueryInfo queryInfo,
+            ResultCollectionUnit<TItem> resultCollectionInfoUnit,
+            string? queryAdditionalInfo = null)
+        {
+            return dbProviderFactory.SelectCollectionAsync(
+                connectionString,
+                queryInfo.Text,
+                resultCollectionInfoUnit,
+                queryInfo.CommandTimeout,
+                queryInfo.CancellationToken ?? CancellationToken.None,
                 queryAdditionalInfo: queryAdditionalInfo);
         }
 
