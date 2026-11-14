@@ -7,13 +7,13 @@ public static partial class Select
 {
     extension(DbProviderFactory dbProviderFactory)
     {
-        /// <summary>Selects a data table from the database</summary>
-        /// <param name="connectionString">Connection string</param>
-        /// <param name="queryText">SQL query text</param>
-        /// <param name="resultTableInfoUnit">Query execution information unit</param>
-        /// <param name="commandTimeout">Query command timeout</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <param name="queryAdditionalInfo">Additional query information</param>
+        /// <summary>Selects a data table from the database.</summary>
+        /// <param name="connectionString">Connection string.</param>
+        /// <param name="queryText">SQL query text.</param>
+        /// <param name="resultTableInfoUnit">Query execution information unit.</param>
+        /// <param name="commandTimeout">Query command timeout.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <param name="queryAdditionalInfo">Additional query information.</param>
         /// <returns>True if the data table was obtained successfully</returns>
         public bool SelectDataTable(
             string connectionString,
@@ -34,18 +34,21 @@ public static partial class Select
                 queryAdditionalInfo: queryAdditionalInfo);
         }
 
-        /// <summary>Selects a data table from the database</summary>
-        /// <param name="connectionString">Connection string</param>
-        /// <param name="queryInfo">Query information</param>
-        /// <param name="resultTableInfoUnit">Query execution information unit</param>
-        /// <param name="queryAdditionalInfo">Additional query information</param>
-        /// <returns>True if the data table was obtained successfully</returns>
+        /// <summary>Selects a data table from the database.</summary>
+        /// <param name="connectionString">Connection string.</param>
+        /// <param name="queryInfo">Query information.</param>
+        /// <param name="resultTableInfoUnit">Query execution information unit.</param>
+        /// <param name="queryAdditionalInfo">Additional query information.</param>
+        /// <returns>True if the data table was obtained successfully.</returns>
         public bool SelectDataTable(
             string connectionString,
             QueryInfo queryInfo,
             ResultTableUnit resultTableInfoUnit,
             string? queryAdditionalInfo = null)
         {
+            if (!queryInfo.IsValid(resultTableInfoUnit))
+                return false;
+
             return dbProviderFactory.SelectDataTable(
                 connectionString,
                 queryInfo.Text,
@@ -55,14 +58,14 @@ public static partial class Select
                 queryAdditionalInfo: queryAdditionalInfo);
         }
 
-        /// <summary>Asynchronously selects a data table from the database</summary>
-        /// <param name="connectionString">Connection string</param>
-        /// <param name="queryText">SQL query text</param>
-        /// <param name="resultTableInfoUnit">Query execution information unit</param>
-        /// <param name="commandTimeout">Query command timeout</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <param name="queryAdditionalInfo">Additional query information</param>
-        /// <returns>True if the data table was obtained successfully</returns>
+        /// <summary>Asynchronously selects a data table from the database.</summary>
+        /// <param name="connectionString">Connection string.</param>
+        /// <param name="queryText">SQL query text.</param>
+        /// <param name="resultTableInfoUnit">Query execution information unit.</param>
+        /// <param name="commandTimeout">Query command timeout.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <param name="queryAdditionalInfo">Additional query information.</param>
+        /// <returns>True if the data table was obtained successfully.</returns>
         public async Task<bool> SelectDataTableAsync(
             string connectionString,
             string queryText,
@@ -82,19 +85,22 @@ public static partial class Select
                 queryAdditionalInfo: queryAdditionalInfo);
         }
 
-        /// <summary>Asynchronously selects a data table from the database</summary>
-        /// <param name="connectionString">Connection string</param>
-        /// <param name="queryInfo">Query information</param>
-        /// <param name="resultTableInfoUnit">Query execution information unit</param>
-        /// <param name="queryAdditionalInfo">Additional query information</param>
-        /// <returns>True if the data table was obtained successfully</returns>
-        public Task<bool> SelectDataTableAsync(
+        /// <summary>Asynchronously selects a data table from the database.</summary>
+        /// <param name="connectionString">Connection string.</param>
+        /// <param name="queryInfo">Query information.</param>
+        /// <param name="resultTableInfoUnit">Query execution information unit.</param>
+        /// <param name="queryAdditionalInfo">Additional query information.</param>
+        /// <returns>True if the data table was obtained successfully.</returns>
+        public async Task<bool> SelectDataTableAsync(
             string connectionString,
             QueryInfo queryInfo,
             ResultTableUnit resultTableInfoUnit,
             string? queryAdditionalInfo = null)
         {
-            return dbProviderFactory.SelectDataTableAsync(
+            if (!queryInfo.IsValid(resultTableInfoUnit))
+                return false;
+
+            return await dbProviderFactory.SelectDataTableAsync(
                 connectionString,
                 queryInfo.Text,
                 resultTableInfoUnit,

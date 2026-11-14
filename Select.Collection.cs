@@ -7,15 +7,15 @@ public static partial class Select
 {
     extension(DbProviderFactory dbProviderFactory)
     {
-        /// <summary>Selects a collection of items from the database</summary>
-        /// <typeparam name="TItem">Type of the items in the collection</typeparam>
-        /// <param name="connectionString">Connection string</param>
-        /// <param name="queryText">SQL query text</param>
-        /// <param name="resultCollectionInfoUnit">Query execution information unit</param>
-        /// <param name="commandTimeout">Query command timeout</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <param name="queryAdditionalInfo">Additional query information</param>
-        /// <returns>True if the collection was obtained successfully</returns>
+        /// <summary>Selects a collection of items from the database.</summary>
+        /// <typeparam name="TItem">Type of the items in the collection.</typeparam>
+        /// <param name="connectionString">Connection string.</param>
+        /// <param name="queryText">SQL query text.</param>
+        /// <param name="resultCollectionInfoUnit">Query execution information unit.</param>
+        /// <param name="commandTimeout">Query command timeout.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <param name="queryAdditionalInfo">Additional query information.</param>
+        /// <returns>True if the collection was obtained successfully.</returns>
         public bool SelectCollection<TItem>(
             string connectionString,
             string queryText,
@@ -35,19 +35,22 @@ public static partial class Select
                 queryAdditionalInfo: queryAdditionalInfo);
         }
 
-        /// <summary>Selects a collection of items from the database</summary>
-        /// <typeparam name="TItem">Type of the items in the collection</typeparam>
-        /// <param name="connectionString">Connection string</param>
-        /// <param name="queryInfo">Query information</param>
-        /// <param name="resultCollectionInfoUnit">Query execution information unit</param>
-        /// <param name="queryAdditionalInfo">Additional query information</param>
-        /// <returns>True if the collection was obtained successfully</returns>
+        /// <summary>Selects a collection of items from the database.</summary>
+        /// <typeparam name="TItem">Type of the items in the collection.</typeparam>
+        /// <param name="connectionString">Connection string.</param>
+        /// <param name="queryInfo">Query information.</param>
+        /// <param name="resultCollectionInfoUnit">Query execution information unit.</param>
+        /// <param name="queryAdditionalInfo">Additional query information.</param>
+        /// <returns>True if the collection was obtained successfully.</returns>
         public bool SelectCollection<TItem>(
             string connectionString,
             QueryInfo queryInfo,
             ResultCollectionUnit<TItem> resultCollectionInfoUnit,
             string? queryAdditionalInfo = null)
         {
+            if (!queryInfo.IsValid(resultCollectionInfoUnit))
+                return false;
+
             return dbProviderFactory.SelectCollection(
                 connectionString,
                 queryInfo.Text,
@@ -57,15 +60,15 @@ public static partial class Select
                 queryAdditionalInfo: queryAdditionalInfo);
         }
 
-        /// <summary>Asynchronously selects a collection of items from the database</summary>
-        /// <typeparam name="TItem">Type of the items in the collection</typeparam>
-        /// <param name="connectionString">Connection string</param>
-        /// <param name="queryText">SQL query text</param>
-        /// <param name="resultCollectionInfoUnit">Query execution information unit</param>
-        /// <param name="commandTimeout">Query command timeout</param>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <param name="queryAdditionalInfo">Additional query information</param>
-        /// <returns>True if the collection was obtained successfully</returns>
+        /// <summary>Asynchronously selects a collection of items from the database.</summary>
+        /// <typeparam name="TItem">Type of the items in the collection.</typeparam>
+        /// <param name="connectionString">Connection string.</param>
+        /// <param name="queryText">SQL query text.</param>
+        /// <param name="resultCollectionInfoUnit">Query execution information unit.</param>
+        /// <param name="commandTimeout">Query command timeout.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <param name="queryAdditionalInfo">Additional query information.</param>
+        /// <returns>True if the collection was obtained successfully.</returns>
         public async Task<bool> SelectCollectionAsync<TItem>(
             string connectionString,
             string queryText,
@@ -85,20 +88,23 @@ public static partial class Select
                 queryAdditionalInfo: queryAdditionalInfo);
         }
 
-        /// <summary>Asynchronously selects a collection of items from the database</summary>
-        /// <typeparam name="TItem">Type of the items in the collection</typeparam>
-        /// <param name="connectionString">Connection string</param>
-        /// <param name="queryInfo">Query information</param>
-        /// <param name="resultCollectionInfoUnit">Query execution information unit</param>
-        /// <param name="queryAdditionalInfo">Additional query information</param>
-        /// <returns>True if the collection was obtained successfully</returns>
-        public Task<bool> SelectCollectionAsync<TItem>(
+        /// <summary>Asynchronously selects a collection of items from the database.</summary>
+        /// <typeparam name="TItem">Type of the items in the collection.</typeparam>
+        /// <param name="connectionString">Connection string.</param>
+        /// <param name="queryInfo">Query information.</param>
+        /// <param name="resultCollectionInfoUnit">Query execution information unit.</param>
+        /// <param name="queryAdditionalInfo">Additional query information.</param>
+        /// <returns>True if the collection was obtained successfully.</returns>
+        public async Task<bool> SelectCollectionAsync<TItem>(
             string connectionString,
             QueryInfo queryInfo,
             ResultCollectionUnit<TItem> resultCollectionInfoUnit,
             string? queryAdditionalInfo = null)
         {
-            return dbProviderFactory.SelectCollectionAsync(
+            if (!queryInfo.IsValid(resultCollectionInfoUnit))
+                return false;
+
+            return await dbProviderFactory.SelectCollectionAsync(
                 connectionString,
                 queryInfo.Text,
                 resultCollectionInfoUnit,
