@@ -115,18 +115,20 @@ public static partial class Select
             int commandTimeout,
             CancellationToken cancellationToken)
         {
+            using DbConnection? connection = dbProviderFactory.CreateConnection();
+            using DbCommand? queryCommand = dbProviderFactory.CreateCommand();
             using DbDataAdapter? dataAdapter = dbProviderFactory.CreateDataAdapter();
 
-            if (dataAdapter is null)
-            {
+            if (connection is null || queryCommand is null || dataAdapter is null)
                 return null;
-            }
 
-            using DbDataSource dataSource =
-                dbProviderFactory.CreateDataSource(connectionString);
-            dataAdapter.SelectCommand = dataSource.CreateCommand(queryText);
+            connection.ConnectionString = connectionString;
+            queryCommand.Connection = connection;
+            queryCommand.CommandText = queryText;
+            queryCommand.CommandTimeout = commandTimeout;
+            dataAdapter.SelectCommand = queryCommand;
             cancellationToken.ThrowIfCancellationRequested();
-            dataAdapter.SelectCommand.CommandTimeout = commandTimeout;
+
             DataTable resultTable = new();
             dataAdapter.Fill(resultTable);
             return resultTable;
@@ -138,12 +140,18 @@ public static partial class Select
             int commandTimeout,
             CancellationToken cancellationToken)
         {
-            await using DbDataSource dataSource =
-                dbProviderFactory.CreateDataSource(connectionString);
-            await using DbCommand queryCommand =
-                dataSource.CreateCommand(queryText);
-            cancellationToken.ThrowIfCancellationRequested();
+            await using DbConnection? connection = dbProviderFactory.CreateConnection();
+            await using DbCommand? queryCommand = dbProviderFactory.CreateCommand();
+
+            if (connection is null || queryCommand is null)
+                return null;
+
+            connection.ConnectionString = connectionString;
+            queryCommand.Connection = connection;
+            queryCommand.CommandText = queryText;
             queryCommand.CommandTimeout = commandTimeout;
+            cancellationToken.ThrowIfCancellationRequested();
+
             await using DbDataReader reader =
                 await queryCommand.ExecuteReaderAsync(cancellationToken);
             DataTable resultTable = new();

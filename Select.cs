@@ -171,7 +171,7 @@ public static partial class Select
         string statusMessage,
         string? queryAdditionalInfo = null)
     {
-        operationInfoUnit.Count++;
+        //operationInfoUnit.Count++;
         bool hasAdditionalInfo = !string.IsNullOrEmpty(queryAdditionalInfo);
 
         if (hasAdditionalInfo)
@@ -179,9 +179,9 @@ public static partial class Select
             operationInfoUnit.Message = $"Database query: {queryAdditionalInfo}";
         }
 
-        operationInfoUnit.Message =
-            hasAdditionalInfo ? "" : "Query №" +
-            $"{operationInfoUnit.Count} out of {operationInfoUnit.TotalCount}: {statusMessage}";
+        //operationInfoUnit.Message =
+        //    hasAdditionalInfo ? "" : "Query №" +
+        //    $"{operationInfoUnit.Count} out of {operationInfoUnit.TotalCount}: {statusMessage}";
     }
 
     private static void FinalizeOperationInfo(
