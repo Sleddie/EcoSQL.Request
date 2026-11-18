@@ -7,10 +7,27 @@
     <Version>1.0</Version>
     <Authors>Sleddie</Authors>
     <Company>Blue-Yellow</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <Copyright>2026 Blue-Yellow</Copyright>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageProjectUrl>https://github.com/Sleddie/EcoSQL.Request</PackageProjectUrl>
+    <PackageReleaseNotes># v1.0
+Basic DataTable and Collection query methods</PackageReleaseNotes>
+    <PackageTags>sql;query;async;net-10</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.89" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
