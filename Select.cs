@@ -17,7 +17,7 @@ public static partial class Select
     /// <param name="getCount">The function for getting the count of items.</param>
     /// <param name="queryAdditionalInfo">The additional information for the query to display.</param>
     /// <returns>True if data was obtained successfully (not null); otherwise, false.</returns>
-    private static bool SelectData<TData>(
+    public static bool SelectData<TData>(
         QueryData<TData> queryData,
         string connectionString,
         string queryText,
@@ -87,7 +87,7 @@ public static partial class Select
     /// <param name="getCount">The function for getting the count of items.</param>
     /// <param name="queryAdditionalInfo">The additional information for the query to display.</param>
     /// <returns>True if data was obtained successfully (not null); otherwise, false.</returns>
-    private static bool SelectData<TData>(
+    public static bool SelectData<TData>(
         QueryData<TData> queryData,
         string connectionString,
         string queryText,
@@ -123,7 +123,7 @@ public static partial class Select
     /// <param name="getCount">The function for getting the count of items.</param>
     /// <param name="queryAdditionalInfo">The additional information for the query to display.</param>
     /// <returns>True if data was obtained successfully (not null); otherwise, false.</returns>
-    private static async Task<bool> SelectDataAsync<TData>(
+    public static async Task<bool> SelectDataAsync<TData>(
         QueryDataAsync<TData> queryDataAsync,
         string connectionString,
         string queryText,
@@ -228,30 +228,4 @@ public static partial class Select
         FinalizeOperationInfo(operationInfoUnit, statusMessage, queryAdditionalInfo: queryAdditionalInfo);
         operationInfoUnit.Message = $"Obtained items count: {itemsCount}";
     }
-
-    /// <summary>Represents a delegate for querying data.</summary>
-    /// <typeparam name="TData">The type of the data to select.</typeparam>
-    /// <param name="connectionString">The connection string for the database.</param>
-    /// <param name="queryText">The text of the query.</param>
-    /// <param name="commandTimeout">The query command timeout.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    private delegate TData? QueryData<TData>(
-        string connectionString,
-        string queryText,
-        int commandTimeout,
-        CancellationToken cancellationToken)
-        where TData : class;
-
-    /// <summary>Represents a delegate for querying data asynchronously.</summary>
-    /// <typeparam name="TData">The type of the data to select.</typeparam>
-    /// <param name="connectionString">The connection string for the database.</param>
-    /// <param name="queryText">The text of the query.</param>
-    /// <param name="commandTimeout">The query command timeout.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    private delegate Task<TData?> QueryDataAsync<TData>(
-        string connectionString,
-        string queryText,
-        int commandTimeout,
-        CancellationToken cancellationToken)
-        where TData : class;
 }
