@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace EcoSQL.Request;
+﻿namespace EcoSQL.Request;
 
 /// <summary>Provides static and extension methods for querying data from a database.</summary>
 public static partial class Select
@@ -181,27 +179,6 @@ public static partial class Select
 
             obtainedDataInfoUnit.Result = obtainedData;
         }
-    }
-
-    /// <summary>Gets the full message of an exception, including inner exceptions.</summary>
-    /// <param name="ex">The exception for which to get the full message.</param>
-    /// <returns>The full message of the exception.</returns>
-    private static string GetExceptionFullMessage(this Exception ex)
-    {
-        if (ex.InnerException is null)
-        {
-            return ex.Message;
-        }
-
-        StringBuilder fullMessageBuilder = new(ex.Message);
-        Exception? innerEx = ex.InnerException;
-
-        do
-        {
-            fullMessageBuilder.Append($"{Environment.NewLine}\t{ex.Message}");
-        } while ((innerEx = innerEx?.InnerException) is not null);
-
-        return fullMessageBuilder.ToString();
     }
 
     private static void FinalizeOperationInfo(
