@@ -14,8 +14,12 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <PackageProjectUrl>https://github.com/Sleddie/EcoSQL.Request</PackageProjectUrl>
-    <PackageReleaseNotes># v1.0
-Basic DataTable and Collection query methods</PackageReleaseNotes>
+    <PackageReleaseNotes># v1.1
+Generic query methods;
+Query methods delegates.
+
+# v1.0
+Basic DataTable and Collection query methods.</PackageReleaseNotes>
     <PackageTags>sql;query;async;net-10</PackageTags>
   </PropertyGroup>
 
