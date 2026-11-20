@@ -6,13 +6,11 @@
     <Nullable>enable</Nullable>
     <Version>1.1</Version>
     <Authors>Sleddie</Authors>
-    <Company>Blue-Yellow</Company>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Copyright>2026 Blue-Yellow</Copyright>
+    <Copyright>Copyright (c) 2026 Sleddie</Copyright>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/Sleddie/EcoSQL.Request</PackageProjectUrl>
     <PackageReleaseNotes># v1.1
 Generic query methods;
