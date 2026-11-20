@@ -50,7 +50,7 @@ public class ResultCollectionUnit<TItem> : ResultUnit<ICollection<TItem>>
 /// as its result.</summary>
 public class ResultTableUnit : ResultUnit<DataTable>
 {
-    /// <summary>Adds a new <see cref="DataRow"/> to the <see cref="Result"/> table.</summary>
+    /// <summary>Adds a new <see cref="DataRow"/> to the <see cref="ResultUnit{DataTable}.Result"/> table.</summary>
     /// <param name="newRow">The new row to add.</param>
     public virtual void AddDataRow(DataRow newRow)
     {
@@ -59,7 +59,7 @@ public class ResultTableUnit : ResultUnit<DataTable>
         OnResultTableRowAdded(newRow);
     }
 
-    /// <summary>Removes a <see cref="DataRow"/> from the <see cref="Result"/> table.</summary>
+    /// <summary>Removes a <see cref="DataRow"/> from the <see cref="ResultUnit{DataTable}.Result"/> table.</summary>
     /// <param name="row">The row to remove.</param>
     public virtual void RemoveDataRow(DataRow row)
     {
@@ -68,9 +68,9 @@ public class ResultTableUnit : ResultUnit<DataTable>
         OnResultTableRowRemoved(row);
     }
 
-    /// <summary>Occurs when a new <see cref="DataRow"/> is added to the <see cref="Result"/> table.</summary>
+    /// <summary>Occurs when a new <see cref="DataRow"/> is added to the <see cref="ResultUnit{DataTable}.Result"/> table.</summary>
     public event Action<DataRow>? ResultTableRowAdded;
-    /// <summary>Occurs when a <see cref="DataRow"/> is removed from the <see cref="Result"/> table.</summary>
+    /// <summary>Occurs when a <see cref="DataRow"/> is removed from the <see cref="ResultUnit{DataTable}.Result"/> table.</summary>
     public event Action<DataRow>? ResultTableRowRemoved;
 
     /// <summary>Raises the <see cref="ResultTableRowAdded"/> event.</summary>

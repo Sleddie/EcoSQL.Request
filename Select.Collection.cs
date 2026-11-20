@@ -113,7 +113,16 @@ public static partial class Select
                 queryAdditionalInfo: queryAdditionalInfo);
         }
 
-        private ICollection<TItem>? QueryCollection<TItem>(
+        /// <summary>Queries a collection of items from the database.</summary>
+        /// <remarks>This method can be used as a <see cref="QueryData{T}"/> delegate
+        /// with a <see cref="ICollection{T}"/> return type.</remarks>
+        /// <typeparam name="TItem">Type of the items in the collection.</typeparam>
+        /// <param name="connectionString">Connection string.</param>
+        /// <param name="queryText">SQL query text.</param>
+        /// <param name="commandTimeout">Command timeout.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The queried collection of items, or null if the operation failed.</returns>
+        public ICollection<TItem>? QueryCollection<TItem>(
             string connectionString,
             string queryText,
             int commandTimeout,
@@ -131,7 +140,16 @@ public static partial class Select
             return resultCollection;
         }
 
-        private async Task<ICollection<TItem>?> QueryCollectionAsync<TItem>(
+        /// <summary>Asynchronously queries a collection of items from the database.</summary>
+        /// <remarks>This method can be used as a <see cref="QueryDataAsync{T}"/> delegate
+        /// with a <see cref="ICollection{T}"/> return type.</remarks>
+        /// <typeparam name="TItem">Type of the items in the collection.</typeparam>
+        /// <param name="connectionString">Connection string.</param>
+        /// <param name="queryText">SQL query text.</param>
+        /// <param name="commandTimeout">Command timeout.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The queried collection of items, or null if the operation failed.</returns>
+        public async Task<ICollection<TItem>?> QueryCollectionAsync<TItem>(
             string connectionString,
             string queryText,
             int commandTimeout,

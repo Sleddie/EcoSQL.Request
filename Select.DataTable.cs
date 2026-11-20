@@ -109,7 +109,15 @@ public static partial class Select
                 queryAdditionalInfo: queryAdditionalInfo);
         }
 
-        private DataTable? QueryDataTable(
+        /// <summary>Queries a data table from the database.</summary>
+        /// <remarks>This method can be used as a <see cref="QueryData{T}"/> delegate
+        /// with a <see cref="DataTable"/> return type.</remarks>
+        /// <param name="connectionString">Connection string.</param>
+        /// <param name="queryText">SQL query text.</param>
+        /// <param name="commandTimeout">Command timeout.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The queried data table, or null if the operation failed.</returns>
+        public DataTable? QueryDataTable(
             string connectionString,
             string queryText,
             int commandTimeout,
@@ -134,7 +142,15 @@ public static partial class Select
             return resultTable;
         }
 
-        private async Task<DataTable?> QueryDataTableAsync(
+        /// <summary>Asynchronously queries a data table from the database.</summary>
+        /// <remarks>This method can be used as a <see cref="QueryDataAsync{T}"/> delegate
+        /// with a <see cref="DataTable"/> return type.</remarks>
+        /// <param name="connectionString">Connection string.</param>
+        /// <param name="queryText">SQL query text.</param>
+        /// <param name="commandTimeout">Command timeout.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The queried data table, or null if the operation failed.</returns>
+        public async Task<DataTable?> QueryDataTableAsync(
             string connectionString,
             string queryText,
             int commandTimeout,
