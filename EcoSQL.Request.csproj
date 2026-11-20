@@ -4,7 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>1.1</Version>
+    <Version>1.2</Version>
     <Authors>Sleddie</Authors>
     <Copyright>Copyright (c) 2026 Sleddie</Copyright>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -12,9 +12,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageProjectUrl>https://github.com/Sleddie/EcoSQL.Request</PackageProjectUrl>
-    <PackageReleaseNotes># v1.1
-Generic query methods;
-Query methods delegates.</PackageReleaseNotes>
+    <PackageReleaseNotes># v1.2
+Low-level query methods.</PackageReleaseNotes>
     <PackageTags>sql;query;async;net-10</PackageTags>
   </PropertyGroup>
 
