@@ -31,7 +31,7 @@ public static partial class Select
                 resultCollectionInfoUnit,
                 commandTimeout,
                 cancellationToken,
-                getCount: collection => collection.Count,
+                //getCount: collection => collection.Count,
                 queryAdditionalInfo: queryAdditionalInfo);
         }
 
@@ -84,7 +84,7 @@ public static partial class Select
                 resultCollectionInfoUnit,
                 commandTimeout,
                 cancellationToken,
-                getCount: collection => collection.Count,
+                //getCount: collection => collection.Count,
                 queryAdditionalInfo: queryAdditionalInfo);
         }
 
