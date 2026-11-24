@@ -30,7 +30,7 @@ public static partial class Select
                 resultTableInfoUnit,
                 commandTimeout,
                 cancellationToken,
-                getCount: dataTable => dataTable.Rows.Count,
+                //getCount: dataTable => dataTable.Rows.Count,
                 queryAdditionalInfo: queryAdditionalInfo);
         }
 
@@ -81,7 +81,7 @@ public static partial class Select
                 resultTableInfoUnit,
                 commandTimeout,
                 cancellationToken,
-                getCount: dataTable => dataTable.Rows.Count,
+                //getCount: dataTable => dataTable.Rows.Count,
                 queryAdditionalInfo: queryAdditionalInfo);
         }
 
