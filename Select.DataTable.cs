@@ -168,11 +168,19 @@ public static partial class Select
             queryCommand.CommandTimeout = commandTimeout;
             cancellationToken.ThrowIfCancellationRequested();
 
-            await using DbDataReader reader =
-                await queryCommand.ExecuteReaderAsync(cancellationToken);
-            DataTable resultTable = new();
-            resultTable.Load(reader);
-            return resultTable;
+            try
+            {
+                await connection.OpenAsync(cancellationToken);
+                await using DbDataReader reader =
+                    await queryCommand.ExecuteReaderAsync(cancellationToken);
+                DataTable resultTable = new();
+                resultTable.Load(reader);
+                return resultTable;
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
         }
     }
 }
