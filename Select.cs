@@ -154,14 +154,16 @@ public static partial class Select
         string statusMessage,
         string? queryAdditionalInfo = null)
     {
+        string fullMessage = $"Query status: {statusMessage}";
         bool hasAdditionalInfo = !string.IsNullOrEmpty(queryAdditionalInfo);
 
         if (hasAdditionalInfo)
         {
-            operationInfoUnit.Message = $"Database query info: {queryAdditionalInfo}";
+            fullMessage = $"Database query info: {queryAdditionalInfo}{Environment.NewLine}\t" +
+                fullMessage;
         }
 
-        operationInfoUnit.Message = $"Query status: {statusMessage}";
+        operationInfoUnit.Message = fullMessage;
     }
 
     #region obsolete
