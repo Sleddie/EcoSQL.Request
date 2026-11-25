@@ -88,7 +88,6 @@ public static partial class Select
             commandTimeout,
             cancellationToken,
             out TData? obtainedData,
-            getCount: getCount,
             queryAdditionalInfo: queryAdditionalInfo);
         obtainedDataInfoUnit.Result = obtainedData;
         return isObtained;
@@ -188,7 +187,6 @@ public static partial class Select
         int commandTimeout,
         CancellationToken cancellationToken,
         out TData? obtainedData,
-        [Obsolete]
         Func<TData, int>? getCount,
         string? queryAdditionalInfo = null)
         where TData : class
